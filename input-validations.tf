@@ -160,11 +160,11 @@ locals {
   validate_vpc_availability_zones_chk = regex("^${local.vpc_availability_zones_msg}$", (local.validate_vpc_availability_zones_cnd == 0 ? local.vpc_availability_zones_msg : ""))
 }
 
-locals {
-  validate_zone                  = var.storage_type == "persistent" ? contains(["us-south-1", "us-south-3", "eu-de-1", "eu-de-2", "eu-de-3", "jp-tok-2", "jp-tok-3", "ca-tor-1", "ca-tor-3" ], join(",", var.vpc_availability_zones)) : true
-  zone_msg                       = "The solution supports bare metal server creation in only given availability zones i.e. us-south-1, us-south-3, eu-de-1, eu-de-2, jp-tok-2, jp-tok-3, ca-tor-1 and ca-tor-3. To deploy persistent storage provide any one of the supported availability zones."
-  validate_persistent_region_chk = regex("^${local.zone_msg}$", (local.validate_zone ? local.zone_msg : ""))
-}
+# locals {
+#   validate_zone                  = var.storage_type == "persistent" ? contains(["us-south-1", "us-south-3", "eu-de-1", "eu-de-2", "eu-de-3", "jp-tok-2", "jp-tok-3", "ca-tor-1", "ca-tor-3" ], join(",", var.vpc_availability_zones)) : true
+#   zone_msg                       = "The solution supports bare metal server creation in only given availability zones i.e. us-south-1, us-south-3, eu-de-1, eu-de-2, jp-tok-2, jp-tok-3, ca-tor-1 and ca-tor-3. To deploy persistent storage provide any one of the supported availability zones."
+#   validate_persistent_region_chk = regex("^${local.zone_msg}$", (local.validate_zone ? local.zone_msg : ""))
+# }
 
 locals {
   icn_cnd = (var.storage_type != "evaluation" && var.ibm_customer_number == "") ? false : true
@@ -364,7 +364,7 @@ locals {
 
   // Existing LDAP server cert validation
   validate_ldap_server_cert = ((trimspace(var.ldap_server) != "" && trimspace(var.ldap_server_cert) != "" && trimspace(var.ldap_server_cert) != "null") || trimspace(var.ldap_server) == "null" || !var.enable_ldap)
-  ldap_server_cert_msg = "Provide the existing LDAP server certificate. This is required if 'ldap_server' is not set to 'null'; otherwise, the LDAP configuration will not succeed."
+  ldap_server_cert_msg      = "Provide the existing LDAP server certificate. This is required if 'ldap_server' is not set to 'null'; otherwise, the LDAP configuration will not succeed."
   validate_ldap_server_cert_chk = regex(
     "^${local.ldap_server_cert_msg}$",
     local.validate_ldap_server_cert ? local.ldap_server_cert_msg : ""
@@ -408,7 +408,7 @@ locals {
   existing_instance_buckets     = [for details in var.afm_cos_config : details if(details.cos_instance != "" && details.bucket_name != "")]
   check_exstng_instances        = [for instance in local.existing_instance_buckets : instance.cos_instance]
   check_existing_buckets        = [for buckets in local.existing_instance_buckets : buckets.bucket_name]
-  check_existing_buckets_region = [for region in local.existing_instance_buckets : region.bucket_region ]
+  check_existing_buckets_region = [for region in local.existing_instance_buckets : region.bucket_region]
   check_existing_buckets_type   = [for type in local.existing_instance_buckets : type.bucket_type]
 
   # Check if all the given existing HMAC keys are available.
