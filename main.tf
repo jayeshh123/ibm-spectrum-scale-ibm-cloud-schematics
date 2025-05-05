@@ -419,9 +419,9 @@ locals {
   existing_sg_bootstrap              = var.bootstrap_sg_name != null ? [data.ibm_is_security_group.bootstrap_security_group[0].id] : [module.bootstrap_security_group.sec_group_id]
   enable_sec_interface               = local.scale_ces_enabled == false && data.ibm_is_instance_profile.compute_vsi.bandwidth[0].value >= 64000 ? true : false
   ldap_instance_key_pair             = var.enable_ldap ? jsonencode(var.ldap_instance_key_pair) : jsonencode([])
-  scale_cloud_install_repo_url       = "https://github.com/IBM/ibm-spectrum-scale-cloud-install"
+  scale_cloud_install_repo_url       = "https://github.com/jayeshh123/ibm-spectrum-scale-cloud-install"
   scale_cloud_install_repo_name      = "ibm-spectrum-scale-cloud-install"
-  scale_cloud_install_repo_tag       = "v2.8.0"
+  scale_cloud_install_repo_tag       = "nvidia_poc"
   scale_cloud_infra_repo_url         = "https://github.com/IBM/ibm-spectrum-scale-install-infra"
   scale_cloud_infra_repo_name        = "ibm-spectrum-scale-install-infra"
   scale_cloud_infra_repo_tag         = "ibmcloud_v2.8.0"
